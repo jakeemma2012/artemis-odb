@@ -2,34 +2,36 @@ name: Build Artemis-ODB with JDK 21
 
 on:
   push:
-    branches: [ develop ] 
+    branches: [ develop ]
   pull_request:
     branches: [ develop ]
-    
 
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  
+      - name: ✅ Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # đảm bảo clone full repo, tránh lỗi thiếu file
 
-      - name: Set up JDK 21
+      - name: ☕ Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21'  # JDK 21
-          distribution: 'temurin'  
-          cache: 'gradle' 
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'  # optional, không gây lỗi
 
-      - name: Make Gradle wrapper executable
+      - name: 🔧 Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: 🛠 Build with Gradle
+        run: ./gradlew clean build
 
-      - name: Publish artifact
+      - name: 📦 Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: artemis-odb-jar
-          path: build/libs/*.jar
+          path: |
+            build/libs/*.jar
