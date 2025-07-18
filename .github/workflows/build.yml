@@ -14,14 +14,14 @@ jobs:
       - name: ✅ Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # đảm bảo clone full repo, tránh lỗi thiếu file
+          fetch-depth: 0  # full repo, tránh lỗi thiếu file
 
       - name: ☕ Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'gradle'  # optional, không gây lỗi
+          # cache: 'gradle'  <-- đã bỏ để tránh lỗi
 
       - name: 🔧 Make Gradle wrapper executable
         run: chmod +x ./gradlew
@@ -33,5 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artemis-odb-jar
-          path: |
-            build/libs/*.jar
+          path: build/libs/*.jar
